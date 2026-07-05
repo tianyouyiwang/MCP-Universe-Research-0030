@@ -1,0 +1,33 @@
+name: Issue Automation
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  auto-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on bug issues
+        if: contains(github.event.issue.labels.*.name, 'bug')
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'create-comment'
+          issue-number: ${{ github.event.issue.number }}
+          body: 'Thank you. We will fix it.'
+
+      - name: Comment on feature issues
+        if: contains(github.event.issue.labels.*.name, 'feature')
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'create-comment'
+          issue-number: ${{ github.event.issue.number }}
+          body: 'Thank you, we will consider to include this feature.'
+
+      - name: Comment on discussion issues
+        if: contains(github.event.issue.labels.*.name, 'discussion')
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'create-comment'
+          issue-number: ${{ github.event.issue.number }}
+          body: 'Thanks for starting this discussion! We welcome community input.'
